@@ -15,8 +15,10 @@ const PORT = process.env.PORT || 3000;
 const CONNECTION_STRING = process.env.CON_URL;
 
 const todoRoute = require('./Routes/Todo.js')
+const userRoute = require('./Routes/User.js')
 
 app.use('/api/todos', todoRoute)
+app.use('/api', userRoute)
 
 const start = async () => {
     try{
