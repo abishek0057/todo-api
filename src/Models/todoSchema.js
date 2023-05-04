@@ -3,20 +3,21 @@ const mongoose = require('mongoose');
 const todoSchema = new mongoose.Schema({
     title: {
         type: String,
-        require: true
+        require: [true, "Please add the todo title"]
     },
     description: {
         type: String,
-        require: true
+        require: [true, "Please add the todo description"]
     },
     priority: {
         type: Boolean,
         default: false
     },
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        require: true,
+        ref: "User"
     }
-}, {timestamps: true})
+}, { timestamps: true })
 
 module.exports = mongoose.model('Todo', todoSchema);

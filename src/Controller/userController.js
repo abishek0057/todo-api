@@ -1,5 +1,6 @@
 const User = require('../Models/userSchema');
 const { validatePassword, hashPassword } = require('../utils/hashPassword')
+const { jwtAccessToken } = require('../utils/jwtSign')
 
 const userSignUp = async (req, res) => {
     try {
@@ -29,17 +30,23 @@ const userLogIn = async (req, res) => {
             const hashedPassword = user[0].password;
             const validPassword = await validatePassword(req.body.password, hashedPassword)
             if (validPassword) {
-                res.send("you are logged in")
+                const { email, _id } = user[0];
+                const accessToken = jwtAccessToken(email, _id);
+                res.send({ accessToken })
             } else {
                 res.status(404).json({ message: "Invalid Password", invalidPassword: true })
             }
         }
         else {
-            res.status(401).json({ message: "Invalid ", noUser: true })
+            res.status(401).json({ message: "Invalid username", noUser: true })
         }
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
 }
 
-module.exports = { userSignUp, userLogIn }
+const currentUser = async (req, res) => {
+    res.json(req.user)
+}
+
+module.exports = { userSignUp, userLogIn, currentUser }
