@@ -7,7 +7,7 @@ const jwtAccessToken = (email, id) => {
             id
         },
     },
-        process.env.ACCESS_TOKEN_SECERT,
+        process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '30d' })
     return token;
 }
